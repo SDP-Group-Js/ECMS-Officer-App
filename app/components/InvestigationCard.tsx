@@ -32,7 +32,11 @@ const InvestigationCard = ({
   }
 
   return (
-    <section className="mx-4 my-2 rounded-lg border-2 border-gray-400 px-2 py-2 text-base text-gray-600 lg:mx-2 lg:text-lg">
+    <section
+      className={`mx-4 mt-2 ${
+        isExpanded ? "mb-8" : "mb-2"
+      } rounded-lg border-2 border-gray-400 px-2 py-2 text-base text-gray-600 lg:mx-2 lg:text-lg`}
+    >
       <div
         className={`flex items-center ${
           isExpanded ? "justify-between md:justify-start" : "justify-start"
