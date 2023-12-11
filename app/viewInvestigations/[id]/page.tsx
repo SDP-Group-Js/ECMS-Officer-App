@@ -59,9 +59,6 @@ export default async function Home({ params }: ViewInvestigationParams) {
               stageId={0}
             />
           </div>
-          <div>
-            <BlankLine />
-          </div>
           <div className="flex w-full items-center justify-center">
             <CompleteStageButton
               investigationId={investigationId}
