@@ -3,7 +3,6 @@ import BlankLine from "@/app/components/BlankLine";
 import CaptureActionButton from "@/app/components/CaptureActionButton";
 import CompleteStageButton from "@/app/components/CompleteStageButton";
 import ExpandedInvestigationCard from "@/app/components/ExpandedInvestigationCard";
-import InvestigationCard from "@/app/components/InvestigationCard";
 import NavBar from "@/app/components/NavBar";
 import Image from "next/image";
 
@@ -54,16 +53,10 @@ export default async function Home({ params }: ViewInvestigationParams) {
         <BlankLine />
         <section>
           <div className="flex w-full items-center justify-center">
-            <CaptureActionButton
-              investigationId={investigationId}
-              stageId={0}
-            />
+            <CaptureActionButton investigationId={investigationId} />
           </div>
           <div className="flex w-full items-center justify-center">
-            <CompleteStageButton
-              investigationId={investigationId}
-              stageId={0}
-            />
+            <CompleteStageButton investigationId={investigationId} />
           </div>
         </section>
         <BlankLine />

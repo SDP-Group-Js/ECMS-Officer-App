@@ -1,19 +1,17 @@
 import React from "react";
 import BlankLine from "./BlankLine";
 
-type ExpandedInvestigationCardProps = {
+type MinifiedInvestigationCardProps = {
   investigationId: number;
   dateAssigned: Date;
   currentStageName: String;
-  currentStageDescription: String;
 };
 
-const ExpandedInvestigationCard = ({
+const MinifiedInvestigationCard = ({
   investigationId,
   dateAssigned,
   currentStageName,
-  currentStageDescription,
-}: ExpandedInvestigationCardProps) => {
+}: MinifiedInvestigationCardProps) => {
   function formatInvestigationId(investigationId: number): string {
     const formattedId = investigationId.toString().padStart(3, "0");
     const hashedId = "#" + formattedId;
@@ -31,11 +29,9 @@ const ExpandedInvestigationCard = ({
       <div>
         <BlankLine />
         <div className="mx-2 block font-bold">{currentStageName}</div>
-        <BlankLine />
-        <div className="mx-2 block">{currentStageDescription}</div>
       </div>
     </section>
   );
 };
 
-export default ExpandedInvestigationCard;
+export default MinifiedInvestigationCard;
