@@ -4,6 +4,7 @@ import React from "react";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import NavBarCollapseButton from "./NavBarCollapseButton";
+import styles from "./NavBar.module.css";
 
 const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -15,7 +16,10 @@ const NavBar = () => {
   return (
     <>
       <nav className="sticky top-0 h-full w-full">
-        <div className="flex h-12 w-full items-center justify-between bg-emerald-500 px-4 py-3 md:h-14 lg:h-16">
+        <div
+          id="mainContent"
+          className="flex h-12 w-full items-center justify-between bg-emerald-500 px-4 py-3 md:h-14 lg:h-16"
+        >
           <Link
             href="/viewInvestigations/"
             className="text-sm font-bold text-white md:text-base lg:text-lg"
@@ -29,7 +33,10 @@ const NavBar = () => {
             <LogoutButton />
           </div>
         </div>
-        <div className="flex-grow items-center justify-center rounded-md bg-white shadow md:hidden">
+        <div
+          id="collapsedContent"
+          className={`flex-grow items-center justify-center rounded-md bg-white shadow md:hidden`}
+        >
           {isExpanded && (
             <ul>
               <li className="block px-4 py-2 text-sm">Item 1</li>
