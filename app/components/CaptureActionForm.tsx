@@ -24,7 +24,7 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
     setModalVisible(false);
   }
 
-  function handleModalUploadEvidenceButtonClick() {
+  function handleModalUploadEvidence() {
     console.log("Upload");
   }
 
@@ -60,7 +60,7 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
       <UploadEvidenceModal
         isVisible={modalVisible}
         handleCloseButtonClick={handleModalCloseButtonClick}
-        handleUploadButtonClick={handleModalUploadEvidenceButtonClick}
+        handleUploadButtonClick={handleModalUploadEvidence}
       />
     </>
   );

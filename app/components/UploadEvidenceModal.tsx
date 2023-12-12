@@ -38,18 +38,18 @@ const UploadEvidenceModal = ({
         <BlankLine />
         <BlankLine />
         <div id="UploadEvidenceModalBody" className="mx-1 md:mx-3 lg:mx-5">
-          <UploadImageButton />
+          <UploadImageButton handleChange={handleUploadButtonClick} />
           <BlankLine />
           <PreviewEvidenceCard />
         </div>
         <BlankLine />
         <BlankLine />
-        <div
+        {/* <div
           id="UploadEvidenceModalFooter"
           className="mx-1 flex items-center justify-center md:mx-3 lg:mx-5"
         >
           <ModalUploadEvidenceButton handleClick={handleUploadButtonClick} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
