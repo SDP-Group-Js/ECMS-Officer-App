@@ -1,7 +1,7 @@
 import React from "react";
 
 type UploadImageButtonProps = {
-  handleChange: () => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const UploadImageButton = ({ handleChange }: UploadImageButtonProps) => {

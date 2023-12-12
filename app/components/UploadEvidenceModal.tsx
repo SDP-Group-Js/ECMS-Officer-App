@@ -7,12 +7,14 @@ import ModalUploadEvidenceButton from "./ModalUploadEvidenceButton";
 
 type UploadEvidenceModalProps = {
   isVisible: boolean;
+  files: File[];
   handleCloseButtonClick: () => void;
-  handleUploadButtonClick: () => void;
+  handleUploadButtonClick: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const UploadEvidenceModal = ({
   isVisible,
+  files,
   handleCloseButtonClick,
   handleUploadButtonClick,
 }: UploadEvidenceModalProps) => {
@@ -40,7 +42,7 @@ const UploadEvidenceModal = ({
         <div id="UploadEvidenceModalBody" className="mx-1 md:mx-3 lg:mx-5">
           <UploadImageButton handleChange={handleUploadButtonClick} />
           <BlankLine />
-          <PreviewEvidenceCard />
+          <PreviewEvidenceCard files={files} />
         </div>
         <BlankLine />
         <BlankLine />
