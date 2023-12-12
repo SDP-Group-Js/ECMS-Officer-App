@@ -12,10 +12,9 @@ const ActionDetailsInputField = () => {
         >
           Details:
         </label>
-        <input
-          type="text"
+        <textarea
           id="actionDetails"
-          className="flex h-40 w-full items-center justify-start rounded-lg border-2 border-gray-400 px-4"
+          className="h-40 w-full rounded-lg border-2 border-gray-400 px-4 py-3"
         />
       </div>
     </>
