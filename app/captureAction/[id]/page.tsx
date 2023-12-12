@@ -10,6 +10,7 @@ interface CaptureActionParams {
 
 export default async function Home({ params }: CaptureActionParams) {
   const investigationId = params.id;
+
   return (
     <>
       <NavBar />
