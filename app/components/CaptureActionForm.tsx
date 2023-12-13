@@ -48,10 +48,9 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
         storage,
         `action-evidence/${actionId}/${file.name + v4()}`,
       );
-      uploadBytes(actionEvidenceRef, file).then(() => {
-        alert("Uploaded successfully");
-      });
+      uploadBytes(actionEvidenceRef, file);
     });
+    alert("Uploaded successfully");
   }
 
   return (

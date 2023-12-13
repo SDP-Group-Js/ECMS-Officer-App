@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 type PreviewEvidenceCardProps = {
   files: File[];
@@ -34,11 +35,13 @@ const PreviewEvidenceCard = ({ files }: PreviewEvidenceCardProps) => {
       <label>Preview Files:</label>
       <div className="my-1 min-h-[300px] w-full rounded-md border-2 border-gray-400 px-2 py-2 text-base text-gray-600">
         {imagePreviews.map((preview, index) => (
-          <img
+          <Image
             key={index}
             src={preview}
             alt={`Preview ${index}`}
-            className="mx-auto mb-2 max-h-[100px]"
+            className="mx-auto mb-2"
+            width={200}
+            height={200}
           />
         ))}
       </div>
