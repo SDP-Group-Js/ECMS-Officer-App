@@ -10,6 +10,7 @@ type InvestigationCardProps = {
   dateAssigned: Date;
   currentStageName: String;
   currentStageDescription: String;
+  maxCharacters: number;
 };
 
 const InvestigationCard = ({
@@ -18,6 +19,7 @@ const InvestigationCard = ({
   dateAssigned,
   currentStageName,
   currentStageDescription,
+  maxCharacters,
 }: InvestigationCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -25,11 +27,15 @@ const InvestigationCard = ({
     setIsExpanded(!isExpanded);
   }
 
-  // function formatInvestigationId(investigationId: number): string {
-  //   const formattedId = investigationId.toString().padStart(3, "0");
-  //   const hashedId = "#" + formattedId;
-  //   return hashedId;
-  // }
+  function formatInvestigationId(
+    investigationId: number,
+    maxCharacters: number,
+  ): string {
+    const characters = Math.max(maxCharacters, 3);
+    const formattedId = investigationId.toString().padStart(characters, "0");
+    const hashedId = "#" + formattedId;
+    return hashedId;
+  }
 
   return (
     <section
@@ -45,8 +51,12 @@ const InvestigationCard = ({
       >
         <div className={`mx-2 ${isExpanded ? "hidden" : ""}`}>{cardId}</div>
         <div className="mx-2">Investigation</div>
-        <div className="mx-2 hidden md:block">{investigationId}</div>
-        <div className="mx-2">{dateAssigned.toLocaleDateString()}</div>
+        <div className="mx-2">
+          {formatInvestigationId(investigationId, maxCharacters)}
+        </div>
+        <div className={`mx-2 ${isExpanded ? "" : "hidden"}`}>
+          {dateAssigned.toLocaleDateString()}
+        </div>
       </div>
       <>
         {isExpanded && (

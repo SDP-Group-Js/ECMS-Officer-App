@@ -16,7 +16,14 @@ export default async function Home() {
     }
   };
 
+  const findMaxNumberOfCharacters = (investigations: any) => {
+    const finalInvestigation = investigations[investigations.length - 1];
+    const maxInvestigationId = finalInvestigation.id;
+    return maxInvestigationId.toString().length;
+  };
+
   const investigations = await getInvestigations();
+  const maxCharacters = findMaxNumberOfCharacters(investigations);
 
   return (
     <>
@@ -29,8 +36,9 @@ export default async function Home() {
             cardId={index + 1}
             investigationId={investigation.id}
             dateAssigned={new Date()}
-            currentStageName={investigation.name}
-            currentStageDescription={"TBA"}
+            currentStageName={"[Stage Name]"}
+            currentStageDescription={"[Description]"}
+            maxCharacters={maxCharacters}
           />
         ))}
       </main>
