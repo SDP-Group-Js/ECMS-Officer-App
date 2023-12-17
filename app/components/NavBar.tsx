@@ -1,16 +1,35 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import NavBarCollapseButton from "./NavBarCollapseButton";
 import styles from "./NavBar.module.css";
+import { useRouter } from "next/navigation";
+import { auth } from "@/config/firebaseStorage";
+import { signOut } from "firebase/auth";
 
 const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      router.push("/");
+    }
+  });
 
   const handleCollapse = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push("/");
+    } catch (error) {
+      alert("Logout error: " + error);
+    }
   };
 
   return (
