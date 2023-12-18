@@ -2,47 +2,45 @@ import BlankLine from "../components/BlankLine";
 import Header from "../components/Header";
 import InvestigationCard from "../components/InvestigationCard";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
+export default async function Home() {
+  const getInvestigations = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/api/investigation");
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      throw new Error("Error fetching data from the server: " + error);
+    }
+  };
+
+  const findMaxNumberOfCharacters = (investigations: any) => {
+    const finalInvestigation = investigations[investigations.length - 1];
+    const maxInvestigationId = finalInvestigation.id;
+    return maxInvestigationId.toString().length;
+  };
+
+  const investigations = await getInvestigations();
+  const maxCharacters = findMaxNumberOfCharacters(investigations);
+
   return (
     <>
       <Header />
       <BlankLine />
       <main>
-        <InvestigationCard
-          cardId={1}
-          investigationId={1}
-          dateAssigned={new Date()}
-          currentStageName={"Stage 1"}
-          currentStageDescription={"Description of stage 1"}
-        />
-        <InvestigationCard
-          cardId={2}
-          investigationId={2}
-          dateAssigned={new Date()}
-          currentStageName={"Stage 2"}
-          currentStageDescription={"Description of stage 2"}
-        />
-        <InvestigationCard
-          cardId={3}
-          investigationId={4}
-          dateAssigned={new Date()}
-          currentStageName={"Stage 3"}
-          currentStageDescription={"Description of stage 3"}
-        />
-        <InvestigationCard
-          cardId={4}
-          investigationId={5}
-          dateAssigned={new Date()}
-          currentStageName={"Stage 4"}
-          currentStageDescription={"Description of stage 4"}
-        />
-        <InvestigationCard
-          cardId={5}
-          investigationId={10}
-          dateAssigned={new Date()}
-          currentStageName={"Stage 5"}
-          currentStageDescription={"Description of stage 5"}
-        />
+        {investigations.map((investigation: any, index: number) => (
+          <InvestigationCard
+            key={investigation.id}
+            cardId={index + 1}
+            investigationId={investigation.id}
+            dateAssigned={new Date()}
+            currentStageName={"[Stage Name]"}
+            currentStageDescription={"[Description]"}
+            maxCharacters={maxCharacters}
+          />
+        ))}
       </main>
     </>
   );

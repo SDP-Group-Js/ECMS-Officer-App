@@ -8,14 +8,37 @@ type ExpandedInvestigationCardProps = {
   currentStageDescription: String;
 };
 
-const ExpandedInvestigationCard = ({
+const ExpandedInvestigationCard = async ({
   investigationId,
   dateAssigned,
   currentStageName,
   currentStageDescription,
 }: ExpandedInvestigationCardProps) => {
-  function formatInvestigationId(investigationId: number): string {
-    const formattedId = investigationId.toString().padStart(3, "0");
+  const getInvestigations = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/api/investigation");
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      throw new Error("Error fetching data from the server: " + error);
+    }
+  };
+
+  const findMaxNumberOfCharacters = (investigations: any) => {
+    const finalInvestigation = investigations[investigations.length - 1];
+    const maxInvestigationId = finalInvestigation.id;
+    return maxInvestigationId.toString().length;
+  };
+
+  const investigations = await getInvestigations();
+  const maxCharacters = findMaxNumberOfCharacters(investigations);
+
+  function formatInvestigationId(
+    investigationId: number,
+    maxCharacters: number,
+  ): string {
+    const characters = Math.max(maxCharacters, 3);
+    const formattedId = investigationId.toString().padStart(characters, "0");
     const hashedId = "#" + formattedId;
     return hashedId;
   }
@@ -24,8 +47,10 @@ const ExpandedInvestigationCard = ({
     <section className="mx-4 my-2 rounded-lg border-2 border-gray-400 px-2 py-2 text-base text-gray-600 lg:mx-2 lg:text-lg">
       <div className="flex items-center justify-between font-bold md:justify-start">
         <div className="mx-2">Investigation</div>
-        <div className="mx-2">{formatInvestigationId(investigationId)}</div>
-        <div className="mx-2">{dateAssigned.toLocaleDateString()}</div>
+        <div className="mx-2">
+          {formatInvestigationId(investigationId, maxCharacters)}
+        </div>
+        <div className="mx-2 block">{dateAssigned.toLocaleDateString()}</div>
       </div>
 
       <div>
