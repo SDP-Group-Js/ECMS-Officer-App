@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { auth } from "@/config/firebaseStorage";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/config/firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,9 +15,9 @@ export default function LoginForm() {
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
-      router.push("../report-complaint");
+      router.push("./viewInvestigations");
     }
-  });
+  }, []);
 
   const login = async (e: any) => {
     e.preventDefault();
@@ -29,65 +29,56 @@ export default function LoginForm() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      const uid = auth.currentUser?.uid;
+
+      const API_URL = "http://localhost:8080";
+      const response = await fetch(`${API_URL}/api/user/users/${uid}`);
+      const userData = await response.json();
+      const userRole = userData.userRole;
+
+      if (userRole !== "FieldOfficer") {
+        await signOut(auth);
+        window.location.pathname = "/";
+        alert("Only field officers can access the system.");
+        return;
+      }
+
       alert("Login Successful");
-      router.push("../report-complaint");
+      router.push("./viewInvestigations");
+      return;
     } catch (error: any) {
       setError(error.message);
-      alert(error.message);
+      alert(error);
     }
   };
 
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
-      <div className="hidden sm:block">
-        <Image className="w-full h-full object-cover" src={loginImg} alt="" />
-      </div>
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="mx-4 w-full rounded-lg border-t-4 border-green-400 p-5 shadow-lg md:w-[50%] lg:w-[30%]">
+        <h1 className="my-4 flex justify-center text-xl font-bold">Login</h1>
 
-
-
-
-      <div className="bg-gray-100 flex flex-col justify-center">
-        {/* Sign In Form */}
-        <form className="max-w-[400px] w-full mx-auto bg-white p-4" onSubmit={handleSignIn}>
-          <h2 className="text-4xl font-bold text-center py-6">SIGN IN</h2>
-          <div className="flex flex-col py-2">
-            <label>Email address</label>
-            <input
-              className="border p-2"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col py-2">
-            <label>Password</label>
-            <input
-              className="border p-2"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button className="border w-full my-5 py-2 bg-emerald-600 hover:bg-green-500 text-white" type="submit">
-            Sign In
+        <form onSubmit={login} className="flex flex-col gap-3">
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Email"
+            className="mb-0 mt-4 rounded-sm border-2 border-gray-200 px-4 py-2"
+          />
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+            className="mb-4 mt-0 rounded-sm border-2 border-gray-200 px-4 py-2"
+          />
+          <button className="cursor-pointer bg-green-600 px-6 py-2 font-bold text-white">
+            Login
           </button>
-          <div className="flex justify-between">
-            <p className="flex items-center">
-              <input className="mr-2" type="checkbox" /> Remember Me
-            </p>
-           
-          </div>
+          {error && (
+            <div className="mt-2 w-fit rounded-md bg-red-500 px-3 py-1 text-sm text-white">
+              {error}
+            </div>
+          )}
         </form>
-
-
-
-
-     
       </div>
     </div>
   );

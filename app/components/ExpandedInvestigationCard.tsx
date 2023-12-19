@@ -3,14 +3,14 @@ import BlankLine from "./BlankLine";
 
 type ExpandedInvestigationCardProps = {
   investigationId: number;
-  dateAssigned: Date;
-  currentStageName: String;
-  currentStageDescription: String;
+  investigationStatus: string;
+  currentStageName: string;
+  currentStageDescription: string;
 };
 
 const ExpandedInvestigationCard = async ({
   investigationId,
-  dateAssigned,
+  investigationStatus,
   currentStageName,
   currentStageDescription,
 }: ExpandedInvestigationCardProps) => {
@@ -50,7 +50,7 @@ const ExpandedInvestigationCard = async ({
         <div className="mx-2">
           {formatInvestigationId(investigationId, maxCharacters)}
         </div>
-        <div className="mx-2 block">{dateAssigned.toLocaleDateString()}</div>
+        <div className="mx-2 block">{investigationStatus}</div>
       </div>
 
       <div>

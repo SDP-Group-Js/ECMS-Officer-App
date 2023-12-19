@@ -8,7 +8,7 @@ import CaptureActionFinalButton from "./CaptureActionFinalButton";
 import TakePictureButton from "./TakePictureButton";
 import UploadEvidenceButton from "./UploadEvidenceButton";
 import UploadEvidenceModal from "./UploadEvidenceModal";
-import { storage } from "../../config/firebaseStorage";
+import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 
