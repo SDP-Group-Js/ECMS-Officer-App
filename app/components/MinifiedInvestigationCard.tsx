@@ -3,13 +3,13 @@ import BlankLine from "./BlankLine";
 
 type MinifiedInvestigationCardProps = {
   investigationId: number;
-  dateAssigned: Date;
+  investigationStatus: string;
   currentStageName: String;
 };
 
 const MinifiedInvestigationCard = ({
   investigationId,
-  dateAssigned,
+  investigationStatus,
   currentStageName,
 }: MinifiedInvestigationCardProps) => {
   function formatInvestigationId(investigationId: number): string {
@@ -23,7 +23,7 @@ const MinifiedInvestigationCard = ({
       <div className="flex items-center justify-between font-bold md:justify-start">
         <div className="mx-2">Investigation</div>
         <div className="mx-2">{formatInvestigationId(investigationId)}</div>
-        <div className="mx-2">{dateAssigned.toLocaleDateString()}</div>
+        <div className="mx-2">{investigationStatus}</div>
       </div>
 
       <div>

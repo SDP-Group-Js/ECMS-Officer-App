@@ -6,12 +6,15 @@ import LogoutButton from "./LogoutButton";
 import NavBarCollapseButton from "./NavBarCollapseButton";
 import styles from "./NavBar.module.css";
 import { useRouter } from "next/navigation";
-import { auth } from "@/config/firebaseStorage";
+import { auth } from "@/config/firebase";
+import { useAuth } from "@/context/auth";
 import { signOut } from "firebase/auth";
 
 const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
+
+  const { userOffice } = useAuth();
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -42,13 +45,13 @@ const NavBar = () => {
           href="/viewInvestigations/"
           className="text-sm font-bold text-white md:text-base lg:text-lg"
         >
-          <h1>[Division Name]</h1>
+          <h1>{userOffice}</h1>
         </Link>
         <div className="md:hidden">
           <NavBarCollapseButton onClick={handleCollapse} />
         </div>
         <div className="hidden md:block">
-          <LogoutButton />
+          <LogoutButton onClick={handleLogout} />
         </div>
       </div>
       <div
@@ -61,7 +64,7 @@ const NavBar = () => {
           <li className="block px-4 py-2 text-sm hover:font-bold">Item 1</li>
           <li className="block px-4 py-2 text-sm hover:font-bold">Item 2</li>
           <li className="block px-4 py-2 text-sm text-red-600 hover:font-bold">
-            <button>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </div>

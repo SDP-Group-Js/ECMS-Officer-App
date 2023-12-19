@@ -7,7 +7,7 @@ import ViewInvestigationButton from "./ViewInvestigationButton";
 type InvestigationCardProps = {
   cardId: number;
   investigationId: number;
-  dateAssigned: Date;
+  investigationStatus: string;
   currentStageName: String;
   currentStageDescription: String;
   maxCharacters: number;
@@ -16,7 +16,7 @@ type InvestigationCardProps = {
 const InvestigationCard = ({
   cardId,
   investigationId,
-  dateAssigned,
+  investigationStatus,
   currentStageName,
   currentStageDescription,
   maxCharacters,
@@ -55,7 +55,7 @@ const InvestigationCard = ({
           {formatInvestigationId(investigationId, maxCharacters)}
         </div>
         <div className={`mx-2 ${isExpanded ? "" : "hidden"}`}>
-          {dateAssigned.toLocaleDateString()}
+          {investigationStatus}
         </div>
       </div>
       <>

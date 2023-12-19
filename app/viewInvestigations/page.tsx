@@ -1,20 +1,11 @@
+"use client";
 import BlankLine from "../components/BlankLine";
 import Header from "../components/Header";
 import InvestigationCard from "../components/InvestigationCard";
+import { useAuth } from "@/context/auth";
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
-export default async function Home() {
-  const getInvestigations = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/api/investigation");
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      throw new Error("Error fetching data from the server: " + error);
-    }
-  };
+export default function Home() {
+  const { userInvestigations } = useAuth();
 
   const findMaxNumberOfCharacters = (investigations: any) => {
     const finalInvestigation = investigations[investigations.length - 1];
@@ -22,22 +13,21 @@ export default async function Home() {
     return maxInvestigationId.toString().length;
   };
 
-  const investigations = await getInvestigations();
-  const maxCharacters = findMaxNumberOfCharacters(investigations);
+  const maxCharacters = findMaxNumberOfCharacters(userInvestigations);
 
   return (
     <>
       <Header />
       <BlankLine />
       <main>
-        {investigations.map((investigation: any, index: number) => (
+        {userInvestigations.map((investigation: any, index: number) => (
           <InvestigationCard
             key={investigation.id}
             cardId={index + 1}
             investigationId={investigation.id}
-            dateAssigned={new Date()}
+            investigationStatus={investigation.status}
             currentStageName={"[Stage Name]"}
-            currentStageDescription={"[Description]"}
+            currentStageDescription={investigation.description}
             maxCharacters={maxCharacters}
           />
         ))}
