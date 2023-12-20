@@ -15,11 +15,23 @@ interface ViewInvestigationParams {
 
 export default function Home({ params }: ViewInvestigationParams) {
   const investigationId = params.id;
-  const { userInvestigations } = useAuth();
+  const { userOfficeInvestigations } = useAuth();
 
-  const filteredInvestigations = userInvestigations.filter(
+  const filteredInvestigations = userOfficeInvestigations.filter(
     (investigation: any) => investigation.id == investigationId,
   );
+
+  const getCurrentStage = (investigation: any): any => {
+    for (const stage of investigation.investigationStages || []) {
+      if (stage.status === "Ongoing") {
+        return stage;
+      }
+    }
+    return null;
+  };
+
+  const currentStage = getCurrentStage(filteredInvestigations[0]);
+  const currentStageActions = currentStage?.actions || [];
 
   return (
     <>
@@ -32,7 +44,7 @@ export default function Home({ params }: ViewInvestigationParams) {
               <ExpandedInvestigationCard
                 investigationId={investigationId}
                 investigationStatus={investigation.status}
-                currentStageName="[Stage Name]"
+                currentStageName={currentStage.stageName}
                 currentStageDescription={investigation.description}
               />
               <BlankLine />
@@ -42,24 +54,15 @@ export default function Home({ params }: ViewInvestigationParams) {
                   Current Actions Taken
                 </h3>
               </div>
-              <ActionCard
-                actionId={1}
-                actionName="[Test Action]"
-                actionDescription="[Test Action Description]"
-                actionLocation="[Test Action Location]"
-              />
-              <ActionCard
-                actionId={2}
-                actionName="[Test Action]"
-                actionDescription="[Test Action Description]"
-                actionLocation="[Test Action Location]"
-              />
-              <ActionCard
-                actionId={3}
-                actionName="[Test Action]"
-                actionDescription="[Test Action Description]"
-                actionLocation="[Test Action Location]"
-              />
+              {currentStageActions.map((action: any) => (
+                <ActionCard
+                  key={action.id}
+                  actionId={action.id}
+                  actionName={action.name}
+                  actionDescription={action.description}
+                  actionUserName={action.user.name}
+                />
+              ))}
             </section>
             <BlankLine />
             <section>
@@ -67,7 +70,7 @@ export default function Home({ params }: ViewInvestigationParams) {
                 <CaptureActionButton investigationId={investigationId} />
               </div>
               <div className="flex w-full items-center justify-center">
-                <CompleteStageButton investigationId={investigationId} />
+                <CompleteStageButton investigationStageId={currentStage.id} />
               </div>
             </section>
             <BlankLine />

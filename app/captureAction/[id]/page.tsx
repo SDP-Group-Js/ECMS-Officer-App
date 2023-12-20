@@ -13,29 +13,40 @@ interface CaptureActionParams {
 
 export default function Home({ params }: CaptureActionParams) {
   const investigationId = params.id;
-  const { userInvestigations } = useAuth();
+  const { userOfficeInvestigations } = useAuth();
 
-  const filteredInvestigations = userInvestigations.filter(
+  const filteredInvestigations = userOfficeInvestigations.filter(
     (investigation: any) => investigation.id == investigationId,
   );
+
+  const getCurrentStageName = (investigation: any): string => {
+    for (const stage of investigation.investigationStages || []) {
+      if (stage.status === "Ongoing") {
+        return stage.stageName;
+      }
+    }
+    return "Undefined";
+  };
 
   return (
     <>
       <NavBar />
       <BlankLine />
       <main>
-        <section>
-          {filteredInvestigations.map((investigation: any) => (
-            <MinifiedInvestigationCard
-              investigationId={investigationId}
-              investigationStatus={investigation.status}
-              currentStageName="[Stage Name]"
-            />
-          ))}
-        </section>
-        <BlankLine />
-        <BlankLine />
-        <CaptureActionForm investigationId={investigationId} />
+        {filteredInvestigations.map((investigation: any) => (
+          <>
+            <section>
+              <MinifiedInvestigationCard
+                investigationId={investigationId}
+                investigationStatus={investigation.status}
+                currentStageName={getCurrentStageName(investigation)}
+              />
+            </section>
+            <BlankLine />
+            <BlankLine />
+            <CaptureActionForm investigation={investigation} />
+          </>
+        ))}
       </main>
     </>
   );
