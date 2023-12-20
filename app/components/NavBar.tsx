@@ -56,13 +56,11 @@ const NavBar = () => {
       </div>
       <div
         id="collapsedContent"
-        className={`flex-grow items-center justify-center rounded-md bg-emerald-100 shadow md:hidden ${
+        className={`flex-grow items-center justify-center rounded-md bg-emerald-100 py-2 shadow md:hidden ${
           isExpanded ? "" : "hidden"
         }`}
       >
         <ul>
-          <li className="block px-4 py-2 text-sm hover:font-bold">Item 1</li>
-          <li className="block px-4 py-2 text-sm hover:font-bold">Item 2</li>
           <li className="block px-4 py-2 text-sm text-red-600 hover:font-bold">
             <button onClick={handleLogout}>Logout</button>
           </li>

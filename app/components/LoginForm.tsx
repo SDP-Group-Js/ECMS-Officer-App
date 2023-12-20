@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { auth } from "@/config/firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

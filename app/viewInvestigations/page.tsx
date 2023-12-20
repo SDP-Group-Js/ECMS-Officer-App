@@ -5,7 +5,7 @@ import InvestigationCard from "../components/InvestigationCard";
 import { useAuth } from "@/context/auth";
 
 export default function Home() {
-  const { userInvestigations } = useAuth();
+  const { userOfficeInvestigations } = useAuth();
 
   const findMaxNumberOfCharacters = (investigations: any) => {
     const finalInvestigation = investigations[investigations.length - 1];
@@ -13,20 +13,29 @@ export default function Home() {
     return maxInvestigationId.toString().length;
   };
 
-  const maxCharacters = findMaxNumberOfCharacters(userInvestigations);
+  const maxCharacters = findMaxNumberOfCharacters(userOfficeInvestigations);
+
+  const getCurrentStageName = (investigation: any): string => {
+    for (const stage of investigation.investigationStages || []) {
+      if (stage.status === "Ongoing") {
+        return stage.stageName;
+      }
+    }
+    return "Undefined";
+  };
 
   return (
     <>
       <Header />
       <BlankLine />
       <main>
-        {userInvestigations.map((investigation: any, index: number) => (
+        {userOfficeInvestigations.map((investigation: any, index: number) => (
           <InvestigationCard
             key={investigation.id}
             cardId={index + 1}
             investigationId={investigation.id}
             investigationStatus={investigation.status}
-            currentStageName={"[Stage Name]"}
+            currentStageName={getCurrentStageName(investigation)}
             currentStageDescription={investigation.description}
             maxCharacters={maxCharacters}
           />
