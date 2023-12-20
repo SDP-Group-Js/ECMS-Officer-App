@@ -24,6 +24,7 @@ const CaptureActionForm = ({ investigation }: CaptureActionFormProps) => {
   const [actionName, setActionName] = useState("");
   const [actionDescription, setActionDescription] = useState("");
   const router = useRouter();
+  const { fetchUserData } = useAuth();
 
   function handleUploadEvidenceButtonClick() {
     setModalVisible(true);
@@ -76,6 +77,7 @@ const CaptureActionForm = ({ investigation }: CaptureActionFormProps) => {
     const actionId = data.id;
     uploadImages(actionId);
     setModalVisible(false);
+    fetchUserData(auth.currentUser);
     alert("Action captured successfully.");
     router.push(`/viewInvestigations/${investigation.id}`);
   }
