@@ -8,18 +8,22 @@ import CaptureActionFinalButton from "./CaptureActionFinalButton";
 import TakePictureButton from "./TakePictureButton";
 import UploadEvidenceButton from "./UploadEvidenceButton";
 import UploadEvidenceModal from "./UploadEvidenceModal";
-import { storage } from "../../config/firebase";
+import { auth, storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth";
 
 type CaptureActionFormProps = {
-  investigationId: number;
+  investigation: any;
 };
 
-const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
+const CaptureActionForm = ({ investigation }: CaptureActionFormProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
-  const actionId = 0; //TBA with API
+  const [actionName, setActionName] = useState("");
+  const [actionDescription, setActionDescription] = useState("");
+  const router = useRouter();
 
   function handleUploadEvidenceButtonClick() {
     setModalVisible(true);
@@ -36,10 +40,54 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
     setFilesToUpload(fileList);
   }
 
-  function handleCaptureActionFinalButtonClick() {
+  function handleActionNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setActionName(e.target.value);
+  }
+
+  function handleActionDescriptionChange(
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) {
+    setActionDescription(e.target.value);
+  }
+
+  async function handleCaptureActionFinalButtonClick() {
+    const investigationStageId = getCurrentStageId(investigation);
+    const actionUserId = auth.currentUser?.uid;
+
+    const SERVER_URL = "http://localhost:8080";
+
+    const body = JSON.stringify({
+      investigationStageId,
+      actionName,
+      actionDescription,
+      actionUserId,
+    });
+    const response = await fetch(
+      `${SERVER_URL}/api/investigation/captureAction`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      },
+    );
+    const data = await response.json();
+    const actionId = data.id;
     uploadImages(actionId);
     setModalVisible(false);
+    alert("Action captured successfully.");
+    router.push(`/viewInvestigations/${investigation.id}`);
   }
+
+  const getCurrentStageId = (investigation: any): number => {
+    for (const stage of investigation.investigationStages || []) {
+      if (stage.status === "Ongoing") {
+        return stage.id;
+      }
+    }
+    throw new Error("No ongoing stage found");
+  };
 
   function uploadImages(actionId: number) {
     if (filesToUpload.length === 0) return;
@@ -64,7 +112,7 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
       <BlankLine />
       <BlankLine />
       <section className="mx-4 lg:mx-2">
-        <ActionNameInputField />
+        <ActionNameInputField onChange={handleActionNameChange} />
         <BlankLine />
         <ActionLocationInputField />
         <BlankLine />
@@ -75,12 +123,12 @@ const CaptureActionForm = ({ investigationId }: CaptureActionFormProps) => {
           <TakePictureButton />
         </div> */}
         <BlankLine />
-        <ActionDetailsInputField />
+        <ActionDetailsInputField onChange={handleActionDescriptionChange} />
         <BlankLine />
         <BlankLine />
         <div className="flex items-center justify-center">
           <CaptureActionFinalButton
-            investigationId={investigationId}
+            investigationId={investigation.id}
             onClick={handleCaptureActionFinalButtonClick}
           />
         </div>
