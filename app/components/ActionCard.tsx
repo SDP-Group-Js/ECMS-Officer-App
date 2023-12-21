@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import BlankLine from "./BlankLine";
 import { FaUser } from "react-icons/fa";

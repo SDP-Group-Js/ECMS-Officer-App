@@ -32,7 +32,10 @@ export default function LoginForm() {
       const uid = auth.currentUser?.uid;
 
       const API_URL = "http://localhost:8080";
-      const response = await fetch(`${API_URL}/api/user/users/${uid}`);
+      const token = await auth.currentUser?.getIdToken(true);
+      const response = await fetch(`${API_URL}/api/user/users/${uid}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const userData = await response.json();
       const userRole = userData.userRole;
 

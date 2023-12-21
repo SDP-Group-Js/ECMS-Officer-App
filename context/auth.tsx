@@ -41,12 +41,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const uid = user.uid;
       const token = await user.getIdToken(true);
-      // const response = await fetch(`${API_URL}/api/user/getDetails`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-      const response = await fetch(`${API_URL}/api/user/users/${uid}`);
+      const response = await fetch(`${API_URL}/api/user/users/${uid}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const userData = await response.json();
       const name = userData.name;
       const userRole = userData.userRole;
