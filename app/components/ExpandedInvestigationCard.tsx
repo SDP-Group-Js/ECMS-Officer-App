@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import BlankLine from "./BlankLine";
+import { useAuth } from "@/context/auth";
 
 type ExpandedInvestigationCardProps = {
   investigationId: number;
@@ -8,21 +10,13 @@ type ExpandedInvestigationCardProps = {
   currentStageDescription: string;
 };
 
-const ExpandedInvestigationCard = async ({
+const ExpandedInvestigationCard = ({
   investigationId,
   investigationStatus,
   currentStageName,
   currentStageDescription,
 }: ExpandedInvestigationCardProps) => {
-  const getInvestigations = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/api/investigation");
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      throw new Error("Error fetching data from the server: " + error);
-    }
-  };
+  const { userOfficeInvestigations } = useAuth();
 
   const findMaxNumberOfCharacters = (investigations: any) => {
     const finalInvestigation = investigations[investigations.length - 1];
@@ -30,8 +24,7 @@ const ExpandedInvestigationCard = async ({
     return maxInvestigationId.toString().length;
   };
 
-  const investigations = await getInvestigations();
-  const maxCharacters = findMaxNumberOfCharacters(investigations);
+  const maxCharacters = findMaxNumberOfCharacters(userOfficeInvestigations);
 
   function formatInvestigationId(
     investigationId: number,

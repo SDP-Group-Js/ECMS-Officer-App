@@ -69,6 +69,7 @@ const CaptureActionForm = ({ investigation }: CaptureActionFormProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${await auth.currentUser?.getIdToken()}`,
         },
         body: body,
       },

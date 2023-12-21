@@ -1,4 +1,3 @@
-"use client";
 import { auth } from "@/config/firebase";
 import { useAuth } from "@/context/auth";
 import React from "react";
@@ -14,18 +13,27 @@ const CompleteStageButton = ({
   const { fetchUserData } = useAuth();
   const handleClick = async () => {
     const SERVER_URL = "http://localhost:8080";
-    const response = await fetch(
+    fetch(
       `${SERVER_URL}/api/investigation/completeStage/${investigationStageId}`,
-      { method: "PUT" },
-    );
-    if (response.ok) {
-      alert("Stage completed successfully");
-      fetchUserData(auth.currentUser);
-    } else {
-      alert("Failed to complete stage");
-    }
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${await auth.currentUser?.getIdToken()}`,
+        },
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          alert("Stage completed successfully");
+          fetchUserData(auth.currentUser);
+        } else {
+          alert("Failed to complete stage");
+        }
+      })
+      .catch((error) => {
+        console.error("Error completing stage:", error);
+      });
   };
-
   return (
     <>
       <button
